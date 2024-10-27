@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Suivi des Candidatures</title>
+</head>
+<body>
+    <h1>Vos Candidatures</h1>
+    <ul>
+        {% for candidature in candidatures %}
+            <li>
+                Offre : {{ candidature.offres_stages.titre }} - Statut : {{ candidature.etat }} - 
+                Date de soumission : {{ candidature.date_soumission }}
+            </li>
+        {% empty %}
+            <li>Vous n'avez postulé à aucune offre pour le moment.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

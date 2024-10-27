@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Gérer les Contrats</title>
+</head>
+<body>
+    <h1>Vos Contrats</h1>
+    <ul>
+        {% for contrat in contrats %}
+            <li>
+                Type : {{ contrat.type_contrat }} - Étudiant : {{ contrat.etudiant.nom }} - 
+                Date début : {{ contrat.date_debut }} - Date fin : {{ contrat.date_fin }}
+            </li>
+        {% empty %}
+            <li>Vous n'avez signé aucun contrat pour le moment.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
