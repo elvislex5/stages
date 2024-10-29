@@ -152,3 +152,70 @@ justify-content: space-evenly;
 .stat-item p {
     font-size: 18px;
 }
+
+/* static/css/espace_etudiant.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+    padding: 20px;
+}
+
+header h1 {
+    text-align: center;
+    color: #ff6600;
+}
+
+.dashboard {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.dashboard div {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 250px;
+    text-align: center;
+}
+
+.dashboard h2 {
+    color: #333;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.dashboard p {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.dashboard a {
+    display: block;
+    margin-top: 10px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.badge, .mon-besoin-stage, .mon-cv {
+    margin-top: 20px;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.mon-cv button {
+    display: block;
+    margin: 10px auto;
+    padding: 10px 20px;
+    border: none;
+    background-color: #ff6600;
+    color: white;
+    font-size: 1em;
+    border-radius: 5px;
+}
+

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 
 from .models import OffreStage, Candidature, Contrat
 from .forms import AuthenticationForm, SignUpForm
@@ -9,7 +9,7 @@ from .forms import AuthenticationForm, SignUpForm
 # Create your views here.
 
 def accueil(request):
-    return render(request, 'base.html')
+    return render(request, 'accueil/home.html')
 
 def login_view(request):
     if request.method == 'POST':
@@ -20,11 +20,14 @@ def login_view(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('consulter_offres')
+                return redirect('espace_etudiant')
     else:
         form = AuthenticationForm()
     return render(request, 'registration/login.html', {'form': form})
 
+def logout_view(request):
+    logout(request)
+    return redirect('accueil')
 def register_view(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -36,6 +39,17 @@ def register_view(request):
         form = SignUpForm()
     return render(request, 'registration/signup.html', {'form': form})
 
+@login_required()
+def espace_etudiant(request):
+    # Récupérer l'étudiant actuel
+    etudiant = request.user.etudiant
+    # Récupérer les candidatures de cet étudiant
+    candidatures = Candidature.objects.filter(etudiant=etudiant)
+    context = {
+        'candidatures': candidatures,
+        'etudiant': etudiant,
+    }
+    return render(request, 'etudiant/espace_etudiant.html', context)
 
 def consulter_offres(request):
     offres = OffreStage.objects.all()

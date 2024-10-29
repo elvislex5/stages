@@ -9,7 +9,7 @@
         {% for candidature in candidatures %}
             <li>
                 Offre : {{ candidature.offres_stages.titre }} - Statut : {{ candidature.etat }} - 
-                Date de soumission : {{ candidature.date_soumission }}
+                Date de Publication : {{ candidature.date_soumission }}
             </li>
         {% empty %}
             <li>Vous n'avez postulé à aucune offre pour le moment.</li>

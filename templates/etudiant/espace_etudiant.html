@@ -1,0 +1,36 @@
+
+
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Étudiant</title>
+</head>
+<body>
+{% block content %}
+
+    <div class="dashboard">
+
+        <div class="candidatures">
+            <h2>Candidatures Envoyées</h2>
+            <p>{{ candidatures.count }}</p>
+            <a href="{% url 'suivre_candidatures' %}">Suivi Candidatures</a>
+        </div>
+
+        <div class="entretiens">
+            <h2>Entretiens Décrochés</h2>
+            <p>{{ entretiens }}</p>
+            <a href="#">Voir les Entretiens</a>
+        </div>
+    </div>
+
+    <div class="mon-cv">
+        <h3>Mon CV</h3>
+        <button>Voir mon CV</button>
+        <button>Nouveau CV</button>
+    </div>
+{% endblock %}
+</body>
+</html>

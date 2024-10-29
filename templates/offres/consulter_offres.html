@@ -1,9 +1,11 @@
+{% extends 'base.html' %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <title>Consulter les Offres de Stage</title>
 </head>
 <body>
+{% block content %}
     <h1>Offres de Stage Disponibles</h1>
     <ul>
         {% for offre in offres %}
@@ -15,5 +17,6 @@
             <li>Aucune offre disponible pour le moment.</li>
         {% endfor %}
     </ul>
+{% endblock content %}
 </body>
 </html>

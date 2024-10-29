@@ -1,4 +1,5 @@
-{% load static %}
+{% extends 'base.html' %}
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -7,15 +8,17 @@
     <title>Connexion</title>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Connexion</h2>
-        <form method="post" action="{% url 'login' %}">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Se connecter</button>
-            
-            <p>Pas encore de compte ? <a href="{% url 'register_view' %}">Inscrivez-vous ici</a></p>
-        </form>
-    </div>
+    {% block content %}
+        <div class="login-container">
+            <h2>Connexion</h2>
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Se connecter</button>
+                
+                <p>Pas encore de compte ? <a href="{% url 'register_view' %}">Inscrivez-vous ici</a></p>
+            </form>
+        </div>
+    {% endblock content %}
 </body>
 </html>
