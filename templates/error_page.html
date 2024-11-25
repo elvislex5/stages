@@ -1,0 +1,12 @@
+{% extends 'etudiant/base_etudiant.html' %}
+{% block content %}
+    <h2>Visualiser et télécharger votre CV</h2>
+
+    <!-- Visualisation du CV (ici pour un fichier PDF) -->
+    <div id="cv-visualization">
+        <embed src="{% url 'view_cv' filename=your_cv_filename %}" type="application/pdf" width="100%" height="600px">
+    </div>
+
+    <!-- Bouton pour télécharger le CV -->
+    <a href="{% url 'download_cv' filename=your_cv_filename %}" class="btn btn-primary">Télécharger le CV</a>
+{% endblock %}

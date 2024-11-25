@@ -1,0 +1,132 @@
+{% extends 'etudiant/base_etudiant.html' %}
+
+{% block content %}
+    
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                {% if messages %}
+                    <div class="alert alert-success">
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <h1 class="card-title text-center">Mes informations personnelles</h1>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <!-- Photo de profil -->
+                        <div class="col-md-4 text-center">
+                            <div class="profile-picture-wrapper">
+                                {% if etudiant.photo %}
+                                    <img 
+                                            src="{{ etudiant.photo.url }}" 
+                                            alt="Photo de profil" 
+                                            class="rounded-circle img-fluid" 
+                                            style="width: 150px; height: 150px; object-fit: cover;">
+                                {% else %}
+                                    <div class="placeholder-photo rounded-circle" 
+                                         style="width: 150px; height: 150px; background-color: #e9ecef; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                                        <span>Photo</span>
+                                    </div>
+                                {% endif %}
+                                <div class="mt-2 d-flex justify-content-center">
+                                    <input type="file" name="photo" class="form-control d-none" id="photoInput">
+                                    <button type="button" class="btn btn-outline-primary btn-sm" id="changePhotoBtn">Changer la photo</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Informations personnelles -->
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label">Nom :</label>
+                                    <input type="text" name="last_name" value="{{ etudiant.user.last_name }}" class="form-control" readonly>
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label">Prénom :</label>
+                                    <input type="text" name="first_name" value="{{ etudiant.user.first_name }}" class="form-control" readonly>
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label">Date de naissance :</label>
+                                    <input type="date" name="date_de_naissance" value="{{ etudiant.date_de_naissance }}" class="form-control" readonly>
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label">Adresse :</label>
+                                    <input type="text" name="adresse" value="{{ etudiant.adresse }}" class="form-control" readonly>
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label">Téléphone :</label>
+                                    <input type="text" name="telephone" value="{{ etudiant.telephone }}" class="form-control" readonly>
+                                </div>
+                                <div class="col-sm-12">
+                                    <button type="button" id="editBtn" class="btn btn-primary">Modifier mes informations</button>
+                                    <button type="submit" id="saveBtn" class="btn btn-success d-none">Enregistrer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Activer les champs pour l'édition
+        document.getElementById('editBtn').addEventListener('click', function () {
+            const formControls = document.querySelectorAll('input.form-control');
+            formControls.forEach(input => input.removeAttribute('readonly'));
+    
+            // Afficher le bouton "Enregistrer" et cacher "Modifier mes informations"
+            document.getElementById('editBtn').classList.add('d-none');
+            document.getElementById('saveBtn').classList.remove('d-none');
+        });
+    
+        // Activer l'input file en cliquant sur le bouton
+        document.getElementById('changePhotoBtn').addEventListener('click', function () {
+            document.getElementById('photoInput').click();
+        });
+    </script>
+
+{% endblock %}
+
+<h1>Mes informations personnelles</h1>
+
+  <div class="form-group">
+    <label>Nom :</label>
+    <p>{{ etudiant.user.last_name }}</p>
+  </div>
+
+  <div class="form-group">
+    <label>Prénom :</label>
+    <p>{{ etudiant.user.first_name }}</p>
+  </div>
+
+  <div class="form-group">
+    <label>Email :</label>
+    <p>{{ etudiant.user.email }}</p>
+  </div>
+
+  <div class="form-group">
+    <label>Date de naissance :</label>
+    <p>{{ etudiant.date_de_naissance }}</p>
+  </div>
+
+  <div class="form-group">
+    <label>Adresse :</label>
+    <p>{{ etudiant.adresse }}</p>
+  </div>
+
+  <div class="form-group">
+    <label>Téléphone :</label>
+    <p>{{ etudiant.telephone }}</p>
+  </div>
+
+  {% if etudiant.photo %}
+    <div class="form-group">
+      <label>Photo :</label>
+      <img src="{{ etudiant.photo.url }}" alt="Photo de profil" style="max-width: 150px;">
+    </div>
+  {% endif %}

@@ -1,0 +1,34 @@
+{% extends "etudiant/base_etudiant.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Votre Lettre de Motivation</h2>
+
+    {% if etudiant.lettre_motivation %}
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Votre Lettre de Motivation</h5>
+                <!-- Télécharger la lettre de motivation -->
+                <p>
+                    <a href="{{ etudiant.lettre_motivation.url }}" class="btn btn-primary">
+                        <i class="fas fa-download"></i> Télécharger la Lettre
+                    </a>
+                </p>
+                <!-- Visualiser la lettre de motivation (si c'est un PDF) -->
+                <div id="lettre-visualization">
+                    <embed src="{{ etudiant.lettre_motivation.url }}" type="application/pdf" width="100%" height="600px">
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <p>Vous n'avez pas encore téléchargé de lettre de motivation.</p>
+    {% endif %}
+
+    <!-- Action pour télécharger une lettre de motivation -->
+    <div class="d-flex justify-content-start">
+        <a href="{% url 'upload_lettre_motivation' %}" class="btn btn-success btn-lg me-2">
+            <i class="fas fa-upload"></i> Télécharger une Lettre de Motivation
+        </a>
+    </div>
+</div>
+{% endblock %}

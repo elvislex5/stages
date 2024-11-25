@@ -1,0 +1,50 @@
+/* Pagination de base */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    list-style-type: none;
+    padding-left: 0;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Symbole de pagination */
+.page-item {
+    margin: 0 10px; /* Espacement entre les éléments de pagination */
+}
+
+/* Liens de pagination */
+.page-link {
+    padding: 10px 20px; /* Espacement autour du texte */
+    border-radius: 5px;
+    color: #007bff;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    text-align: center;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* Changement de couleur au survol */
+.page-link:hover {
+    background-color: #007bff;
+    color: white;
+    border-color: #0056b3;
+}
+
+/* Page active */
+.page-item.active .page-link {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+/* Liens désactivés (grisés) */
+.page-item.disabled .page-link {
+    color: #6c757d;
+    background-color: #e9ecef;
+    border-color: #ddd;
+    pointer-events: none; /* Empêche le clic sur les éléments désactivés */
+}

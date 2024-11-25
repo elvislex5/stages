@@ -1,0 +1,37 @@
+{% extends 'etudiant/base_etudiant.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Mes compétences</h2>
+    <div class="card">
+        <div class="card-body">
+            <a href="{% url 'competence_create' %}" class="btn btn-primary mb-3">Ajouter une compétence</a>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Compétence</th>
+                        <th>Niveau</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for competence in competences %}
+                    <tr>
+                        <td>{{ competence.nom }}</td>
+                        <td>{{ competence.niveau }}</td>
+                        <td>
+                            <a href="{% url 'competence_update' competence.pk %}" class="btn btn-warning btn-sm">Modifier</a>
+                            <a href="{% url 'competence_delete' competence.pk %}" class="btn btn-danger btn-sm">Supprimer</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3">Aucune compétence trouvée.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

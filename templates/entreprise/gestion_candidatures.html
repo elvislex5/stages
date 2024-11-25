@@ -1,0 +1,25 @@
+{% extends 'base_directory/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center">Gestion des candidatures</h1>
+
+    <div class="row">
+        {% for offre in offres %}
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ offre.titre }}</h5>
+                    <p class="card-text">{{ offre.description|truncatewords:20 }}</p>
+                    <a href="{% url 'offre_detail' offre.id %}" class="btn btn-primary">Voir les candidatures</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p>Aucune candidature à gérer pour le moment.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

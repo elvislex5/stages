@@ -1,0 +1,19 @@
+{% extends 'etudiant/base_etudiant.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{% if object %}Modifier la Formation{% else %}Ajouter une Formation{% endif %}</h2>
+    <div class="card">
+        <div class="card-body">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="d-flex justify-content-end">
+                    <a href="{% url 'formations_list' %}" class="btn btn-secondary me-2">Annuler</a>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

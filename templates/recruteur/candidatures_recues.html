@@ -1,0 +1,68 @@
+{% extends 'recruteur/base_recruteur.html' %}
+
+{% block content %}
+  <div class="container">
+    <h1>Liste des candidatures reçues</h1>
+
+    <!-- Tableau des candidatures -->
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Nom de l'étudiant</th>
+          <th>Offre</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for candidature in candidatures %}
+          <tr>
+            <td>{{ candidature.etudiant.get_full_name }}</td>
+            <td>{{ candidature.offre.titre }}</td>
+            <td>
+              <!-- Affichage du statut -->
+              <span class="badge {% if candidature.statut == 'selectionne' %}bg-success{% elif candidature.statut == 'rejete' %}bg-danger{% else %}bg-warning{% endif %}">
+                {{ candidature.get_statut_display }}
+              </span>
+            </td>
+            <td>
+              <!-- Lien pour consulter la candidature -->
+{#              <a href="{% url 'candidature_detail' candidature.id %}" class="btn btn-info btn-sm">Consulter</a>#}
+
+              <!-- Formulaire pour changer le statut -->
+{#              <form method="post" action="{% url 'changer_statut_candidature' candidature.id %}" style="display:inline;">#}
+                {% csrf_token %}
+                <div class="btn-group">
+                  <button type="submit" class="btn btn-success btn-sm" name="statut" value="selectionne">Sélectionner pour entretien</button>
+                  <button type="submit" class="btn btn-danger btn-sm" name="statut" value="rejete">Rejeter</button>
+                </div>
+              </form>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="4">Aucune candidature reçue pour cette offre.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+{% endblock %}
+
+
+
+<h1>Candidatures reçues</h1>
+<ul>
+    {% for candidature in candidatures %}
+    <li>
+        <p><strong>Nom du candidat : </strong>{{ candidature.candidat.user.get_full_name }}</p>
+        <p><strong>Offre : </strong>{{ candidature.offre.titre }}</p>
+        <p><strong>Date : </strong>{{ candidature.date_postule }}</p>
+        <a href="{% url 'candidature_detail' candidature.id %}" class="btn btn-info">Voir détails</a>
+    </li>
+    {% empty %}
+    <p>Aucune candidature reçue pour le moment.</p>
+    {% endfor %}
+</ul>
+

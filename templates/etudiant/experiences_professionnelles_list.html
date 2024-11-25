@@ -1,0 +1,39 @@
+{% extends 'etudiant/base_etudiant.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Mes expériences professionnelles</h2>
+    <div class="card">
+        <div class="card-body">
+            <a href="{% url 'experience_create' %}" class="btn btn-primary mb-3">Ajouter une expérience</a>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Poste</th>
+                        <th>Entreprise</th>
+                        <th>Dates</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for experience in experiences %}
+                    <tr>
+                        <td>{{ experience.poste }}</td>
+                        <td>{{ experience.entreprise }}</td>
+                        <td>{{ experience.date_debut }}{% if experience.date_fin %} - {{ experience.date_fin }}{% else %} en cours{% endif %}</td>
+                        <td>
+                            <a href="{% url 'experience_update' experience.pk %}" class="btn btn-warning btn-sm">Modifier</a>
+                            <a href="{% url 'experience_delete' experience.pk %}" class="btn btn-danger btn-sm">Supprimer</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4">Aucune expérience professionnelle trouvée.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

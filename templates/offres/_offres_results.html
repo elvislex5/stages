@@ -1,0 +1,9 @@
+{% for offre in offres %}
+    <div class="result-item">
+        <h5>{{ offre.titre }}</h5>
+        <p>{{ offre.description }}</p>
+        <!-- Ajoutez plus de détails si nécessaire -->
+    </div>
+{% empty %}
+    <p>Aucun résultat trouvé</p>
+{% endfor %}

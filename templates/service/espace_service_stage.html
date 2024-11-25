@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Espace Service Stage</h1>
+    <p>Bienvenue dans l’espace Service Stage. Voici une vue globale du système :</p>
+    
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Offres de Stage</h5>
+                    <p class="card-text">{{ kpi_data.nombre_offres }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Candidatures</h5>
+                    <p class="card-text">{{ kpi_data.nombre_candidatures }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Contrats Signés</h5>
+                    <p class="card-text">{{ kpi_data.nombre_contrats }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h3>Taux d'acceptation des offres : {{ kpi_data.taux_acceptation }}</h3>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <h2>Statistiques Globales (Power BI)</h2>
+            <iframe width="100%" height="600" 
+                    src="https://app.powerbi.com/view?r=YOUR_POWER_BI_EMBED_LINK" 
+                    frameborder="0" allowFullScreen="true">
+            </iframe>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

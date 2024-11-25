@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_directory/base.html' %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -10,33 +10,83 @@
 </head>
     <body>
     {% block content %}
-        <main>
-            <section class="hero">
-                <h1><span>BOOST</span> TON AVENIR. <br> TROUVE UN STAGE.</h1>
-                <p>Dépose ton CV et Postule à nos Offres de Stage au Maroc</p>
-                <div class="buttons">
-                    <a href="{% url 'register_view' %}" class="btn orange">M'inscrire</a>
-                    <a href="#" class="btn grey">Déposer mon CV</a>
+        <div class="container-fluid p-0">
+            <!-- Bannière principale -->
+            <div class="banner py-5 text-white text-center" style="background: linear-gradient(to right, #1b5ba7, rgb(47, 179, 68));">
+                <h1>Opportunités de stage et Premier emploi à portée de main !</h1>
+            </div>
+            <div class="container mt-5">
+                <!-- Barre de recherche -->
+                <div class="search-bar text-center my-4">
+                    <div class="input-group w-66 mx-auto">
+                        <input type="text" class="form-control" placeholder="Cherchez parmi nos offres de stages et premier emploi">
+                        <button class="btn btn-dark" type="button">Rechercher Opportunité</button>
+                    </div>
                 </div>
-            </section>
-    
-            <!-- Statistiques -->
-            <section class="stats">
-                <div class="stat-item">
-                    <h2>+8260</h2>
-                    <p>Organismes</p>
+                <!-- Options de navigation (alignées et centrées) -->
+                <div class="options d-flex justify-content-center w-66 mx-auto py-4">
+                    <div class="option mx-3">
+                        <i class="fa fa-briefcase fa-1x mb-2"></i>
+                        <a href="#" class="text-dark text-decoration-underline d-block fw-bold">OFFRES DE STAGE & EMPLOI</a>
+                        <small>Consultez les offres de stages</small>
+                    </div>
+                    
+                    <!-- Trait séparateur -->
+                    <div class="separator mx-1" style="border-left: 1px solid #ccc; height: 120px;"></div>
+                    
+                    <div class="option mx-3">
+                        <i class="fa fa-book fa-1x mb-2"></i>
+                        <a href="#" class="text-dark text-decoration-underline d-block fw-bold">GUIDES & CONSEILS</a>
+                        <small>Préparez votre candidature et entrainez-vous pour réussir vos entretiens</small>
+                    </div>
+                    
+                    <!-- Trait séparateur -->
+                    <div class="separator mx-1" style="border-left: 1px solid #ccc; height: 120px;"></div>
+                    
+                    <div class="option mx-3">
+                        <i class="fa fa-building fa-1x mb-2"></i>
+                        <a href="#" class="text-dark text-decoration-underline d-block fw-bold">PAGES ENTREPRISES</a>
+                        <small>Découvrez les entreprises qui recrutent au Maroc et déposez vos candidatures spontanées</small>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <h2>+13750</h2>
-                    <p>Offres de stage</p>
-                </div>
-                <div class="stat-item">
-                    <h2>+6000</h2>
-                    <p>Mises en relation</p>
-                </div>
-                <a href="#" class="btn blue">Espace Recruteur</a>
-            </section>
-        </main>
+            </div>
+        </div>
+        
     {% endblock content %}
     </body>
 </html>
+
+ <!-- Section Entreprises -->
+                <h2 class="text-center mt-5">Découvrez les Entreprises qui Recrutent</h2>
+                <p class="text-center">Toute l'information dont vous avez besoin pour choisir votre entreprise</p>
+            
+                <div class="categories d-flex justify-content-center mt-4">
+                    <button class="btn btn-outline-primary">Santé Social & Environnemental</button>
+                    <button class="btn btn-outline-primary">Informatique & Télécoms</button>
+                    <button class="btn btn-outline-primary">Comptabilité & Audit</button>
+                    <button class="btn btn-outline-primary">Banques Finance & Assurance</button>
+                </div>
+            
+                <!-- Grille d'entreprises -->
+                <div class="row mt-5">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <img src="logo-binarios.png" class="card-img-top" alt="Binarios">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Binarios</h5>
+                                <p class="card-text">T2S Group</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <img src="logo-sicda.png" class="card-img-top" alt="SICDA">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">SICDA</h5>
+                                <p class="card-text">Entreprise Tech</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Ajoutez d'autres entreprises ici -->
+                </div>
+            </div>

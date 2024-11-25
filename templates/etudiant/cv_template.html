@@ -1,0 +1,465 @@
+{% extends 'etudiant/base_etudiant.html' %}
+
+{% block content %}
+    
+    <!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon CV</title>
+    <!-- Lien vers Tabler CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet">
+    <style>
+        /* Fond blanc pour la page */
+        body {
+            background-color: #ffffff;
+        }
+
+        .cv-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .cv-header h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .cv-header h2 {
+            font-size: 1.5rem;
+            font-weight: lighter;
+            color: #34495e;
+            margin-top: 5px;
+        }
+
+        .separator {
+            border-top: 4px solid #2c3e50;
+            margin: 20px 0;
+        }
+
+        .profile-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .profile-image {
+            max-width: 150px;
+            border-radius: 50%;
+        }
+
+        .personal-info {
+            text-align: right;
+        }
+
+        .personal-info p {
+            margin: 5px 0;
+            font-size: 1rem;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+        }
+
+        .personal-info .icon {
+            margin-right: 10px;
+            font-size: 1.2rem;
+            color: #000000;
+        }
+
+        .content {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .content-section {
+            flex: 1;
+        }
+
+        .content-section h3 {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            border-bottom: 2px solid #2c3e50;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+        }
+
+        .content-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .content-section li {
+            margin-bottom: 15px;
+        }
+
+        .content-section .formation-title {
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 1.2rem;
+            color: #34495e;
+        }
+
+        .content-section .formation-details {
+            font-style: italic;
+            color: #7f8c8d;
+        }
+        
+        .content-section .experience-title {
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 1.2rem;
+            color: #34495e;
+        }
+        
+        .content-section .experience-details {
+            font-style: italic;
+            color: #7f8c8d;
+        }
+        
+        .nom {
+            text-transform: uppercase;
+            color: #34495e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <!-- En-tête du CV -->
+        <div class="cv-header">
+            <h1 class="nom">{{ user.first_name }} {{ user.last_name }}</h1>
+        </div>
+        <div class="separator"></div>
+
+        <!-- Profil et informations personnelles -->
+        <div class="profile-section">
+            <div class="profile-photo">
+                {% if etudiant.photo %}
+                    <img src="{{ etudiant.photo.url }}" alt="Photo de profil" class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
+                {% else %}
+                    <div class="placeholder-photo rounded-circle" style="width: 150px; height: 150px; background-color: #e9ecef; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                        <span>Photo</span>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="personal-info">
+                <p><i class="icon fa fa-calendar"></i> Date de naissance : {{ etudiant.date_de_naissance }}</p>
+                <p><i class="icon fa fa-phone"></i> Téléphone : {{ etudiant.telephone }}</p>
+                <p><i class="icon fa fa-envelope"></i> Email : {{ user.email }}</p>
+                <p><i class="icon fa fa-map-marker"></i> Adresse : {{ etudiant.adresse }}</p>
+            </div>
+        </div>
+        <div class="separator"></div>
+
+        <!-- Contenu principal : formations, expériences, compétences -->
+        <div class="content">
+            <!-- Section Formations -->
+            <div class="content-section">
+                <h3>Formations</h3>
+                <ul>
+                    {% for formation in formations %}
+                        <li>
+                            <div class="formation-title">
+                                {{ formation.diplome }}
+                            </div>
+                            <div class="formation-details">
+                                ({{ formation.titre }})<br>
+                                {{ formation.date_fin|date:"Y" }}<br>
+                                {{ formation.etablissement }}<br> 
+                                {{ formation.siege_etablissement }}, {{ formation.pays_etablissement }}
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Section Expériences et Compétences -->
+            <div class="content-section">
+                <h3>Expériences</h3>
+                <ul>
+                    {% for experience in experiences %}
+                        <li>
+                            <div class="experience-title">
+                                {{ experience.entreprise }}
+                            </div>
+                            <div class="experience-details">
+                                ({{ experience.departement }})<br>
+                                {{ experience.date_debut|date:"m Y" }} - {{ experience.date_fin|date:"m Y" }}<br>
+                            </div>
+                            <div class="experience-title">
+                                {{ experience.poste }}
+                            </div>
+                            <div class="experience-details">
+                                {{ experience.siege_entreprise }}, {{ experience.pays_entreprise }}
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <h3>Compétences</h3>
+                <ul>
+                    {% for competence in competences %}
+                        <li>{{ competence.nom }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bouton pour télécharger le CV en PDF -->
+    <a href="{% url 'generate_cv_pdf' %}" class="btn btn-primary">Télécharger mon CV en PDF</a>
+
+    <!-- Lien vers Tabler JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
+    <!-- Lien vers Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</body>
+</html>
+
+    
+{% endblock %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon CV</title>
+    <!-- Lien vers Tabler CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet">
+    <style>
+        /* Styles personnalisés */
+        .cv-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .cv-header h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .cv-header h2 {
+            font-size: 1.5rem;
+            font-weight: lighter;
+            color: #34495e;
+            margin-top: 5px;
+        }
+
+        .separator {
+            border-top: 4px solid #2c3e50;
+            margin: 20px 0;
+        }
+
+        .profile-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .profile-image {
+            max-width: 150px;
+            border-radius: 50%;
+        }
+
+        .personal-info {
+            text-align: right;
+        }
+
+        .personal-info p {
+            margin: 5px 0;
+            font-size: 1rem;
+            color: #2c3e50;
+        }
+
+        .personal-info .icon {
+            margin-right: 10px;
+            color: #3498db;
+        }
+
+        .content {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .content-section {
+            flex: 1;
+        }
+
+        .content-section h3 {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            border-bottom: 2px solid #2c3e50;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+        }
+
+        .content-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .content-section li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <!-- En-tête du CV -->
+        <div class="cv-header">
+            <h1>Mon CV</h1>
+            <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+            <!-- Profession (ajoutez un champ dans le modèle pour cela à l'avenir) -->
+        </div>
+        <div class="separator"></div>
+
+        <!-- Profil et informations personnelles -->
+        <div class="profile-section">
+            <div class="profile-photo">
+                {% if etudiant.photo %}
+                <img src="{{ etudiant.photo.url }}" alt="Photo de profil" class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
+            {% else %}
+                <div class="placeholder-photo rounded-circle" 
+                     style="width: 150px; height: 150px; background-color: #e9ecef; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                    <span>Photo</span>
+                </div>
+            {% endif %}
+            </div>
+            <div class="personal-info">
+                <p><i class="icon fa fa-calendar"></i> Date de naissance : {{ etudiant.date_naissance }}</p>
+                <p><i class="icon fa fa-map-marker"></i> Adresse : {{ etudiant.adresse }}</p>
+                <p><i class="icon fa fa-envelope"></i> Email : {{ user.email }}</p>
+                <p><i class="icon fa fa-phone"></i> Téléphone : {{ etudiant.telephone }}</p>
+            </div>
+        </div>
+        <div class="separator"></div>
+
+        <!-- Contenu principal : formations, expériences, compétences -->
+        <div class="content">
+            <!-- Section Formations -->
+            <div class="content-section">
+                <h3>Formations</h3>
+                <ul>
+                    {% for formation in formations %}
+                        <li>
+                            <strong>{{ formation.diplome }}</strong> - {{ formation.ecole }}
+                            <br>
+                            <span>{{ formation.annee_debut }} - {{ formation.annee_fin }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Section Expériences et Compétences -->
+            <div class="content-section">
+                <h3>Expériences</h3>
+                <ul>
+                    {% for experience in experiences %}
+                        <li>
+                            <strong>{{ experience.poste }}</strong> - {{ experience.entreprise }}
+                            <br>
+                            <span>{{ experience.date_debut }} - {{ experience.date_fin }}</span>
+                            <p>{{ experience.description }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <h3>Compétences</h3>
+                <ul>
+                    {% for competence in competences %}
+                        <li>{{ competence.nom }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lien vers Tabler JS (optionnel pour interactivité) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
+</body>
+</html>
+
+
+
+
+<div class="container mt-4">
+    <h2>Mon CV</h2>
+
+    <!-- Section Photo -->
+    <div class="d-flex mb-4">
+        {% if etudiant.photo %}
+            <img src="{{ etudiant.photo.url }}" alt="Photo de profil" class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
+        {% else %}
+            <div class="placeholder-photo rounded-circle" 
+                 style="width: 150px; height: 150px; background-color: #e9ecef; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                <span>Photo</span>
+            </div>
+        {% endif %}
+        <div class="ml-4">
+            <h3>{{ etudiant.user.first_name }} {{ etudiant.user.last_name }}</h3>
+            <p>Email : {{ etudiant.user.email }}</p>
+            <p>Téléphone : {{ etudiant.telephone }}</p>
+            <p>Date de naissance : {{ etudiant.date_de_naissance|date:"d/m/Y" }}</p>
+            <p>Adresse : {{ etudiant.adresse }}</p>
+        </div>
+    </div>
+
+    <!-- Formations -->
+    <section class="mb-4">
+        <h3>Formations</h3>
+        {% if formations %}
+            <ul>
+                {% for formation in formations %}
+                    <li>
+                        <strong>{{ formation.date_inscription|date:"Y" }} - {{ formation.date_fin|date:"Y" }}</strong>
+                        <strong>{{ formation.titre }}</strong>
+                        <strong>{{ formation.etablissement }}</strong>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Aucune formation enregistrée.</p>
+        {% endif %}
+    </section>
+
+    <!-- Expériences professionnelles -->
+    <section class="mb-4">
+        <h3>Expériences professionnelles</h3>
+        {% if experiences %}
+            <ul>
+                {% for experience in experiences %}
+                    <li>
+                        <strong>{{ experience.poste }}</strong> - {{ experience.entreprise }} ({{ experience.date_debut|date:"Y" }} - {{ experience.date_fin|date:"Y" }})
+                        <p>{{ experience.siege_entreprise }} - {{ experience.pays_entreprise }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Aucune expérience professionnelle enregistrée.</p>
+        {% endif %}
+    </section>
+
+    <!-- Compétences -->
+    <section class="mb-4">
+        <h3>Compétences</h3>
+        {% if competences %}
+            <ul>
+                {% for competence in competences %}
+                    <li>
+                        <strong>{{ competence.nom }}</strong> - Niveau: {{ competence.niveau }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Aucune compétence enregistrée.</p>
+        {% endif %}
+    </section>
+
+    <!-- Bouton pour télécharger le CV en PDF -->
+    <a href="{% url 'generate_cv_pdf' %}" class="btn btn-primary">Télécharger mon CV en PDF</a>
+</div>

@@ -1,0 +1,32 @@
+{% extends "etudiant/base_etudiant.html" %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <!-- Carte pour ajouter/modifier le CV -->
+        <div class="col-md-6">
+            <a href="{% url 'cv_detail' %}" class="text-decoration-none text-dark">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <i class="fas fa-file-alt fa-3x mb-3 text-primary"></i>
+                        <h5 class="card-title">CV</h5>
+                        <p>Ajoutez ou modifiez votre CV.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Carte pour ajouter/modifier la lettre de motivation -->
+        <div class="col-md-6">
+            <a href="{% url 'lettre_motivation_detail' %}" class="text-decoration-none text-dark">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <i class="fas fa-file-alt fa-3x mb-3 text-success"></i>
+                        <h5 class="card-title">Lettre de motivation</h5>
+                        <p>Ajoutez ou modifiez votre lettre de motivation.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

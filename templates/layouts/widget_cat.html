@@ -1,0 +1,48 @@
+
+<div class="sidebar-side col-lg-4 pl-lg-5 mt-lg-0 mt-5">
+    <aside class="sidebar">
+        <!-- Popular Post Widget-->
+        <div class="sidebar-widget popular-posts">
+            <div class="sidebar-title">
+                <h4>Posts Recents</h4>
+            </div>
+            <article class="post">
+                <img src="static/blogger/images/blog-s1.jpg" alt="">
+                <div class="text">
+                    <a href="blog-single.html">Sed do eiusmod tempor ut </a>
+                    <div class="post-info">Feb 11, 2021</div>
+                </div>
+            </article>
+            <article class="post">
+                <img src="static/blogger/images/blog-s2.jpg" alt="">
+                <div class="text">
+                    <a href="blog-single.html">Et dolore magna aliqua </a>
+                    <div class="post-info">Feb 22, 2021</div>
+                </div>
+            </article>
+            <article class="post">
+                <img src="static/blogger/images/blog-s3.jpg" alt="">
+                <div class="text"><a href="blog-single.html">Amkmm Ut enim ad minim</a>
+                    <div class="post-info">Feb 13, 2021</div>
+                </div>
+            </article>
+            <article class="post">
+                <img src="static/blogger/images/blog-s4.jpg" alt="">
+                <div class="text"><a href="blog-single.html">Amkmm Ut enim ad minim</a>
+                    <div class="post-info">Feb 14, 2021</div>
+                </div>
+            </article>
+        </div>
+        <!-- Category Widget -->
+        <div class="sidebar-widget sidebar-blog-category">
+            <div class="sidebar-title">
+                <h4>Catégories</h4>
+            </div>
+            {% for cat in categories %}
+            <ul class="blog-cat">
+                <li><a href="{% url 'categorie_post_list' cat.slug %}">{{ cat.name }}</a></li>
+            </ul>
+            {% endfor %}
+        </div>
+    </aside>
+</div>

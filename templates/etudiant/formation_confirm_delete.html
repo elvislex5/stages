@@ -1,0 +1,25 @@
+{% extends 'etudiant/base_etudiant.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Êtes-vous sûr de vouloir supprimer cette formation ?</h2>
+    <div class="card">
+        <div class="card-body">
+            <p><strong>Titre :</strong> {{ formation.titre }}</p>
+            <p><strong>Diplôme :</strong> {{ formation.diplome }}</p>
+            <p><strong>Établissement :</strong> {{ formation.etablissement }}</p>
+            <p><strong>Pays :</strong> {{ formation.pays_etablissement }}</p>
+            <p><strong>Année d'inscription :</strong> {{ formation.annee_inscription }}</p>
+            <p><strong>Date de fin :</strong> {{ formation.date_fin }}</p>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-flex justify-content-end">
+                    <a href="{% url 'formations_list' %}" class="btn btn-secondary me-2">Annuler</a>
+                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

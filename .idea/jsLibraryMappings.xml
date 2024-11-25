@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <file url="file://$PROJECT_DIR$" libraries="{font-awesome}" />
+    <file url="file://$PROJECT_DIR$" libraries="{@popperjs/core, @tabler/core, bootstrap, font-awesome, htmx.org, jquery-3.6.0, pdf.js}" />
   </component>
 </project>

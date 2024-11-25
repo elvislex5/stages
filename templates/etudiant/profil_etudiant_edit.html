@@ -1,0 +1,23 @@
+{% extends 'etudiant/base_etudiant.html' %}
+
+{% block content %}
+  <h1>Modifier mes informations personnelles</h1>
+
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+      <h2>Informations personnelles</h2>
+      {{ user_form.as_p }}  <!-- Formulaire pour les informations utilisateur (nom, prénom, email) -->
+    </div>
+    
+    <div class="form-group">
+      <h2>Informations de l'étudiant</h2>
+      {{ etudiant_form.as_p }}  <!-- Formulaire pour les informations spécifiques à l'étudiant -->
+    </div>
+
+    <button type="submit" class="btn btn-primary">Sauvegarder</button>
+  </form>
+
+  <br>
+  <a href="{% url 'profil_etudiant' %}" class="btn btn-secondary">Retour à mon profil</a>
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends 'recruteur/base_recruteur.html' %}
+{% block content %}
+
+    <div class="row">
+        <!-- Informations personnelles -->
+        <div class="col-md-12 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <form method="post" action="{% url 'creer_offre' %}">
+                        {% csrf_token %}
+                        {{ form.media }}
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Intitulé de l'offre</label>
+                                <input type="text" class="form-control" name="titre" placeholder="Intitulé de l'offre" required>
+                                {% if form.titre.errors %}
+                                    <div class="text-danger">
+                                        {{ form.titre.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Lieu</label>
+                                <input type="text" class="form-control"  name="localisation" placeholder="Lieu" required>
+                                {% if form.localisation.errors %}
+                                    <div class="text-danger">
+                                        {{ form.localisation.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Type de stage</label>
+                                <select name="type_stage" class="form-control" required>
+                                    <option value="plein">Temps plein</option>
+                                    <option value="partiel">Temps partiel</option>
+                                </select>
+                                {% if form.type_stage.errors %}
+                                    <div class="text-danger">
+                                        {{ form.type_stage.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Durée</label>
+                                <input type="text" class="form-control"  name="duree" placeholder="Nombre de mois" required>
+                                {% if form.duree.errors %}
+                                    <div class="text-danger">
+                                        {{ form.duree.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Date limite</label>
+                                <input type="date" class="form-control"  name="date_limite_postulation" placeholder="Date limite" required>
+                                {% if form.date_limite_postulation.errors %}
+                                    <div class="text-danger">
+                                        {{ form.date_limite_postulation.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="form-label">Description de l'offre</label>
+                            {{ form.description }}
+                            {% if form.description.errors %}
+                                <div class="text-danger">
+                                    {{ form.description.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    
+                        <div class="form-footer">
+                            <button type="submit" class="btn btn-dark w-100">Créer l'offre</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+{% endblock %}
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-body">
+            <h1 class="display-6 mb-4 text-primary text-center">Créer une Nouvelle Offre de Stage</h1>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.titre.label_tag }}
+                    {{ form.titre }}
+                </div>
+                <div class="mb-3">
+                    {{ form.description.label_tag }}
+                    {{ form.description }}
+                </div>
+                <div class="mb-3">
+                    {{ form.lieu.label_tag }}
+                    {{ form.lieu }}
+                </div>
+                <div class="mb-3">
+                    {{ form.date_debut.label_tag }}
+                    {{ form.date_debut }}
+                </div>
+                <div class="mb-3">
+                    {{ form.duree.label_tag }}
+                    {{ form.duree }}
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Créer l'offre</button>
+            </form>
+        </div>
+    </div>
+</div>
+

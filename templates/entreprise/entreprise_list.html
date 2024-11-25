@@ -1,0 +1,50 @@
+{% extends 'base_directory/base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Title Section -->
+    <div class="text-center mb-5">
+        <h1>Entreprises qui recrutent</h1>
+        <p class="text-muted">Explorez les entreprises qui sont activement à la recherche de talents. Cette page vous offre un aperçu des recruteurs dans divers secteurs.</p>
+        
+        <!-- Search bar -->
+        <div class="input-group my-4 w-50 mx-auto">
+            <input type="text" class="form-control" placeholder="Chercher">
+            <button class="btn btn-dark">Rechercher Opportunité</button>
+        </div>
+    </div>
+
+    <!-- Companies List -->
+    <div class="row">
+        {% for entreprise in entreprises %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <!-- Company Logo -->
+                            <img src="{{ offre.entreprise.get_logo_url }}" alt="{{ entreprise.nom }}" class="rounded-circle mb-3" style="width: 80px; height: 80px; object-fit: cover;">
+
+                        <!-- Company Name -->
+                        <h5 class="card-title">{{ entreprise.nom }}</h5>
+
+                        <!-- Company Info -->
+                        <div class="d-flex justify-content-center gap-2 my-2">
+                            <span class="badge bg-light text-dark"><i class="fas fa-building me-1"></i> {{ entreprise.secteur_activite }}</span>
+                            <span class="badge bg-light text-dark"><i class="fas fa-map-marker-alt me-1"></i> {{ entreprise.siege }}</span>
+                            <span class="badge bg-light text-dark"><i class="fas fa-calendar me-1"></i> {{ entreprise.created|date:"Y" }}</span>
+                        </div>
+
+                        <!-- View Offers Button -->
+                        <a href="{% url 'entreprise_detail' entreprise.id %}" class="btn btn-outline-primary w-100 mt-3">Consulter</a>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="{% url 'entreprise_detail' entreprise.id %}" class="text-decoration-none">
+                            <i class="fas fa-briefcase"></i> Voir nos offres ({{ entreprise_offres }})
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,120 @@
+{% extends "etudiant/base_etudiant.html" %}
+
+{% block content %}
+    <style>
+    #pdf-preview {
+        width: 100%; /* Largeur totale */
+        height: 600px; /* Hauteur fixe */
+        border: 1px solid #ccc; /* Bordure pour une meilleure visibilité */
+        overflow-y: scroll; /* Ajout d'une barre de défilement verticale */
+        overflow-x: auto; /* Ajout d'une barre de défilement horizontale si nécessaire */
+        padding: 10px; /* Espace autour du contenu */
+        box-sizing: border-box; /* Inclure le padding dans les dimensions */
+        background: #f9f9f9; /* Couleur de fond pour un contraste visuel */
+    }
+
+    canvas {
+        display: block;
+        margin: 10px auto; /* Centrer les pages du PDF */
+    }
+</style>
+<div class="container">
+
+    {% if cv.fichier %}
+        <div class="card shadow-sm mb-4">
+            <div id="pdf-preview" style="width: 100%; height: 600px; border: 1px solid #ccc;"></div>
+            <div class="card-body d-flex justify-content-between mt-3">
+                <a href="{{ cv.fichier.url }}" download class="btn btn-primary">Télécharger</a>
+                <form id="deleteCVForm" method="post" action="{% url 'cv_delete' %}" class="d-inline-block">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                </form>
+                <a href="{% url 'espace_etudiant' %}" class="btn btn-dark">Terminer</a>
+            </div>
+        </div>
+    {% else %}
+        <p>Vous n'avez pas encore ajouté de CV.</p>
+        <a href="{% url 'cv_upload' %}" class="btn btn-dark">Ajouter un CV</a>
+    {% endif %}
+</div>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const deleteForm = document.querySelector("#deleteCVForm");
+        if (deleteForm) {
+            deleteForm.addEventListener('submit', function(e) {
+                if (!confirm("Êtes-vous sûr de vouloir supprimer votre CV ? Cette action est irréversible.")) {
+                    e.preventDefault();
+                }
+            });
+        }
+    });
+</script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const pdfUrl = "{{ cv.fichier.url }}"; // Remplacez par l'URL de votre fichier PDF
+
+        const renderPDF = async (url, containerId) => {
+            const container = document.getElementById(containerId);
+
+            if (!container) {
+                console.error("Container not found!");
+                return;
+            }
+
+            // Charge le document PDF
+            const pdf = await pdfjsLib.getDocument(url).promise;
+
+            // Parcourt chaque page et l'ajoute à l'aperçu
+            for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+                const page = await pdf.getPage(pageNumber);
+
+                // Crée un élément canvas pour afficher la page
+                const canvas = document.createElement("canvas");
+                const context = canvas.getContext("2d");
+
+                const viewport = page.getViewport({ scale: 1.5 });
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+
+                await page.render({ canvasContext: context, viewport: viewport }).promise;
+
+                // Ajoute le canvas à la zone de prévisualisation
+                container.appendChild(canvas);
+            }
+        };
+
+        // Appelez la fonction avec l'URL de votre PDF
+        renderPDF(pdfUrl, "pdf-preview");
+    });
+</script>
+{% endblock %}
+
+
+<div class="container mt-4">
+    <h2 class="mb-4">Votre CV</h2>
+
+    <!-- Afficher le CV actuel -->
+    {% if cv %}
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Votre CV Actuel</h5>
+                <p><a href="{{ cv.url }}" class="btn btn-primary">
+                    <i class="fas fa-download"></i> Visualiser le CV
+                </a></p>
+            </div>
+        </div>
+    {% else %}
+        <p>Vous n'avez pas encore ajouté de CV.</p>
+    {% endif %}
+
+    <!-- Actions -->
+    <div class="d-flex justify-content-start">
+        <a href="{% url 'upload_cv' %}" class="btn btn-success btn-lg me-2">
+            <i class="fas fa-upload"></i> Upload un CV
+        </a>
+        <a href="{% url 'generate_cv' %}" class="btn btn-info btn-lg">
+            <i class="fas fa-magic"></i> Générer un CV
+        </a>
+    </div>
+</div>
+

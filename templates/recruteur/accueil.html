@@ -1,0 +1,129 @@
+{% extends 'recruteur/base_recruteur.html' %}
+
+{% block content %}
+    <div class="row">
+        <!-- Informations de l'entreprise -->
+        <div class="col-md-6 mb-4">
+            <a href="{% url 'informations_entreprise' %}" class="text-decoration-none text-dark">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <i class="fas fa-building fa-3x mb-3 text-primary"></i>
+                        <h5 class="card-title">Informations de l'entreprise</h5>
+                        <p>Renseignez ou modifiez les informations de votre entreprise</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- Mes offres -->
+        <div class="col-md-6 mb-4">
+            <a href="{% url 'mes_offres' %}" class="text-decoration-none text-dark">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <i class="fas fa-briefcase fa-3x mb-3 text-success"></i>
+                        <h5 class="card-title">Mes offres de stage</h5>
+                        <p>Consultez et gérez vos offres de stage</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- Candidatures reçues -->
+        <div class="col-md-6 mb-4">
+            <a href="{% url 'candidatures_recues' %}" class="text-decoration-none text-dark">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <i class="fas fa-users fa-3x mb-3 text-warning"></i>
+                        <h5 class="card-title">Candidatures reçues</h5>
+                        <p>Consultez les candidatures reçues pour vos offres</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- Gestion des contrats -->
+        <div class="col-md-6 mb-4">
+            <a href="{% url 'contrats' %}" class="text-decoration-none text-dark">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <i class="fas fa-file-signature fa-3x mb-3 text-success"></i>
+                        <h5 class="card-title">Contrats</h5>
+                        <p>Consultez et gérez vos contrats de stage</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+    </div>
+{% endblock %}
+
+<!-- Créer une offre -->
+        <div class="col-md-6 mb-4">
+            <a href="#" class="text-decoration-none text-dark">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <i class="fas fa-plus-circle fa-3x mb-3 text-info"></i>
+                        <h5 class="card-title">Créer une offre de stage</h5>
+                        <p>Publiez une nouvelle offre de stage</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+<!-- Statistiques des offres -->
+        <div class="col-md-6 mb-4">
+            <a href="#" class="text-decoration-none text-dark">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <i class="fas fa-chart-line fa-3x mb-3 text-secondary"></i>
+                        <h5 class="card-title">Statistiques</h5>
+                        <p>Suivez les performances de vos offres de stage</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+<!-- Messagerie -->
+        <div class="col-md-6 mb-4">
+            <a href="#" class="text-decoration-none text-dark">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <i class="fas fa-comments fa-3x mb-3 text-primary"></i>
+                        <h5 class="card-title">Messagerie</h5>
+                        <p>Communiquez avec les candidats et étudiants</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- Paramètres du recruteur -->
+        <div class="col-md-6 mb-4">
+            <a href="#" class="text-decoration-none text-dark">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <i class="fas fa-cogs fa-3x mb-3 text-danger"></i>
+                        <h5 class="card-title">Paramètres du profil</h5>
+                        <p>Modifiez les informations et préférences de votre compte</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+
+    <br>
+    <h1 class="display-6 mb-2 text-primary text-center">LISTE DE VOS OFFRES DE STAGES</h1>
+    <div class="container mt-4">
+        <div class="row">
+            {% for offre in offres %}
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ offre.titre }}</h5>
+                        <p class="card-text">{{ offre.description|truncatewords:20 }}</p>
+                        <a href="{% url 'offre_detail' offre.id %}" class="btn btn-primary">Voir l'offre</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <p>Aucune offre de stage disponible pour le moment.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>

@@ -1,0 +1,49 @@
+{% extends 'etudiant/base_etudiant.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Liste des formations</span>
+            <a href="{% url 'formation_create' %}" class="btn btn-primary">Ajouter une formation</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Titre</th>
+                        <th>Diplôme</th>
+                        <th>Établissement</th>
+                        <th>Siège</th>
+                        <th>Pays</th>
+                        <th>Année d'inscription</th>
+                        <th>Date de fin</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for formation in formations %}
+                    <tr>
+                        <td>{{ formation.titre }}</td>
+                        <td>{{ formation.diplome }}</td>
+                        <td>{{ formation.etablissement }}</td>
+                        <td>{{ formation.siege_etablissement }}</td>
+                        <td>{{ formation.pays_etablissement }}</td>
+                        <td>{{ formation.annee_inscription }}</td>
+                        <td>{{ formation.date_fin|date:"d/m/Y" }}</td>
+                        <td>
+                            <a href="{% url 'formation_update' formation.pk %}" class="btn btn-warning btn-sm">Modifier</a>
+                            <a href="{% url 'formation_delete' formation.pk %}" class="btn btn-danger btn-sm">Supprimer</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center">Aucune formation enregistrée.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

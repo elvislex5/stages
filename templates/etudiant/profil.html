@@ -1,0 +1,117 @@
+{% extends 'etudiant/base_etudiant.html' %}
+
+{% block content %}
+    <div class="row">
+        <!-- Informations personnelles -->
+        <div class="col-md-6 mb-4">
+            <a href="{% url 'profil_etudiant' %}" class="text-decoration-none text-dark">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <i class="fas fa-id-card fa-3x mb-3 text-primary"></i>
+                        <h5 class="card-title">Informations personnelles</h5>
+                        <p>Renseignez vos informations d'identité</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- Div Informations Académiques -->
+        <div class="col-md-6 mb-4">
+            <a href="{% url 'formations_list' %}" class="text-decoration-none text-dark">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <i class="fas fa-graduation-cap fa-3x mb-3 text-success"></i>
+                        <h5 class="card-title">Formations</h5>
+                        <!-- Company Info -->
+                        <p>Ajoutez ou modifiez votre parcours académique</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- Candidatures -->
+        <div class="col-md-6 mb-4">
+            <a href="#" class="text-decoration-none text-dark">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <i class="fas fa-briefcase fa-3x mb-3 text-warning"></i>
+                        <h5 class="card-title">Candidatures</h5>
+                        <p>Consultez vos candidatures et leur statut</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- CV -->
+        <div class="col-md-6 mb-4">
+            <a href="{% url 'document_options' %}" class="text-decoration-none text-dark">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <i class="fas fa-file-alt fa-3x mb-3 text-danger"></i>
+                        <h5 class="card-title">Documents</h5>
+                        <p>Gérez vos documents (CV, Lettre de motivation).</p>
+                    </div>
+                </div>
+            </a>
+
+{#            <a href="{% url 'generate_cv' %}" class="text-decoration-none text-dark">#}
+{#                <div class="card shadow-sm h-100">#}
+{#                    <div class="card-body">#}
+{#                        <i class="fas fa-file-alt fa-3x mb-3 text-danger"></i>#}
+{#                        <h5 class="card-title">Documents</h5>#}
+{#                        <p>Ajoutez ou mettez à jour votre CV, Lettre de motivation</p>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </a>#}
+        </div>
+        <!-- Expérience professionnelle -->
+        <div class="col-md-6 mb-4">
+            <a href="{% url 'experiences_list' %}" class="text-decoration-none text-dark">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <i class="fas fa-briefcase-medical fa-3x mb-3 text-info"></i>
+                        <h5 class="card-title">Expérience professionnelle</h5>
+                        <p>Ajoutez vos expériences professionnelles</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- Compétences -->
+        <div class="col-md-6 mb-4">
+            <a href="{% url 'competences_list' %}" class="text-decoration-none text-dark">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <i class="fas fa-lightbulb fa-3x mb-3 text-secondary"></i>
+                        <h5 class="card-title">Compétences</h5>
+                        <p>Renseignez vos compétences clés</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+         <!-- Entretiens -->
+        <div class="col-md-6 mb-4">
+            <a href="#" class="text-decoration-none text-dark">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <i class="fas fa-comments fa-3x mb-3 text-primary"></i>
+                        <h5 class="card-title">Entretiens</h5>
+                        <p>Consultez les détails de vos entretiens</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Contrats -->
+        <div class="col-md-6 mb-4">
+            <a href="#" class="text-decoration-none text-dark">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <i class="fas fa-file-signature fa-3x mb-3 text-success"></i>
+                        <h5 class="card-title">Contrats</h5>
+                        <p>Consultez ou gérez vos contrats</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+
+{% endblock %}
+

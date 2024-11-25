@@ -1,0 +1,19 @@
+{% extends 'recruteur/base_recruteur.html' %}
+
+{% block content %}
+
+<h1>Contrats signés</h1>
+<ul>
+    {% for contrat in contrats %}
+    <li>
+        <p><strong>Nom du stagiaire : </strong>{{ contrat.stagiaire.user.get_full_name }}</p>
+        <p><strong>Offre : </strong>{{ contrat.offre.titre }}</p>
+        <p><strong>Date de début : </strong>{{ contrat.date_debut }}</p>
+        <p><strong>Date de fin : </strong>{{ contrat.date_fin }}</p>
+        <a href="{{ contrat.fichier.url }}" class="btn btn-primary">Télécharger le contrat</a>
+    </li>
+    {% empty %}
+    <p>Aucun contrat signé pour le moment.</p>
+    {% endfor %}
+</ul>
+{% endblock %}

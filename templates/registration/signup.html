@@ -1,65 +1,79 @@
-{% extends 'base.html' %}
+{% extends 'base_directory/base.html' %}
 <!DOCTYPE html>
 <!--suppress ALL -->
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion</title>
+    <title>Inscription</title>
 </head>
 {% block content %}
     <body  class=" border-top-wide border-primary d-flex flex-column">
         <div class="page page-center">
-            <div class="container-tight py-4">
+            <div class="container-tight py-2">
                 <form class="card card-md" action="{% url 'register_view' %}" method="post">
                     {% csrf_token %}
                     <div class="card-body">
-                        <h2 class="card-title text-center mb-4">Inscription</h2>
+                        <h1 class="text-center mb-2">Inscription</h1>
+                    
+                        <!-- Champ Type d'utilisateur -->
                         <div class="mb-3">
-                            <label class="form-label">Prénom</label>
-                            <input type="text" class="form-control" name="first_name" placeholder="Entrez votre prénom">
-                            {% if form.first_name.errors %}
+                            <label class="form-label">Type d'utilisateur</label>
+                            <select name="user_type" class="form-control" required>
+                                <option value="student">Étudiant</option>
+                                <option value="recruiter">Recruteur</option>
+                                <option value="service_stage">Service Stage</option>
+                            </select>
+                            {% if form.user_type.errors %}
                                 <div class="text-danger">
-                                    {{ form.first_name.errors.0 }}
+                                    {{ form.user_type.errors.0 }}
                                 </div>
                             {% endif %}
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Nom</label>
-                            <input type="text" class="form-control" name="last_name" placeholder="Entrez votre nom">
-                            {% if form.last_name.errors %}
-                                <div class="text-danger">
-                                    {{ form.last_name.errors.0 }}
-                                </div>
-                            {% endif %}
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Prénom</label>
+                                <input type="text" class="form-control" name="first_name" placeholder="Votre prénom" required>
+                                {% if form.first_name.errors %}
+                                    <div class="text-danger">
+                                        {{ form.first_name.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Nom</label>
+                                <input type="text" class="form-control" name="last_name" placeholder="Votre nom" required>
+                                {% if form.last_name.errors %}
+                                    <div class="text-danger">
+                                        {{ form.last_name.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Nom d'utilisateur</label>
-                            <input type="text" class="form-control" name="username" placeholder="Entrez un nom d'utilisateur">
-                            {% if form.username.errors %}
-                                <div class="text-danger">
-                                    {{ form.username.errors.0 }}
-                                </div>
-                            {% endif %}
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Nom d'utilisateur</label>
+                                <input type="text" class="form-control" name="username" placeholder="Votre pseudo" required>
+                                {% if form.username.errors %}
+                                    <div class="text-danger">
+                                        {{ form.username.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" name="email" placeholder="Votre email" required>
+                                {% if form.email.errors %}
+                                    <div class="text-danger">
+                                        {{ form.email.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Addresse électronique</label>
-                            <input type="email" class="form-control" name="email" placeholder="Entrez votre email">
-                            {% if form.email.errors %}
-                                <div class="text-danger">
-                                    {{ form.email.errors.0 }}
-                                </div>
-                            {% endif %}
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Mot de passe</label>
-                            <div class="input-group input-group-flat">
-                                <input type="password" class="form-control" name="password1"  placeholder="Créez un mot de passe"  autocomplete="off">
-                                <span class="input-group-text">
-                                    <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="2" /><path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7" /></svg>
-                                    </a>
-                                </span>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Mot de passe</label>
+                                <input type="password" class="form-control" name="password1" placeholder="Mot de passe" required>
                                 {% if form.password1.errors %}
                                     <div class="text-danger">
                                         {{ form.password1.errors.0 }}
@@ -69,16 +83,9 @@
                                     {{ form.password1.help_text }}
                                 </small>
                             </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Confirmation du mot de passe</label>
-                            <div class="input-group input-group-flat">
-                                <input type="password" class="form-control" name="password2" placeholder="Confirmer le mot de passe"  autocomplete="off">
-                                <span class="input-group-text">
-                                    <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="2" /><path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7" /></svg>
-                                    </a>
-                                </span>
+                            <div class="col-md-6">
+                                <label class="form-label">Confirmer mot de passe</label>
+                                <input type="password" class="form-control" name="password2" placeholder="Confirmer mot de passe" required>
                                 {% if form.password2.errors %}
                                     <div class="text-danger">
                                         {{ form.password2.errors.0 }}
@@ -86,6 +93,7 @@
                                 {% endif %}
                             </div>
                         </div>
+                        
 {#                        <div class="mb-3">#}
 {#                            <label class="form-check">#}
 {#                                <input type="checkbox" class="form-check-input"/>#}
@@ -93,7 +101,7 @@
 {#                            </label>#}
 {#                        </div>#}
                         <div class="form-footer">
-                            <button type="submit" class="btn btn-primary w-100">Create new account</button>
+                            <button type="submit" class="btn btn-dark w-100">Inscription</button>
                         </div>
                     </div>
                 </form>
@@ -108,13 +116,5 @@
 {% endblock %}
 </html>
 
-    <div class="login-container">
-        <h2>Sign Up</h2>
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Sign Up</button>
-            <p>Déjà inscrit ? <a href="{% url 'login' %}">Connectez-vous ici</a></p>
-        </form>
-    </div>
+
 

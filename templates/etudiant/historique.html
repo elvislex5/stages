@@ -1,0 +1,30 @@
+{% extends 'base_directory/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center">Historique de mes candidatures</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Offre</th>
+                <th scope="col">Date de candidature</th>
+                <th scope="col">Statut</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for candidature in candidatures %}
+            <tr>
+                <td>{{ candidature.offre_stage.titre }}</td>
+                <td>{{ candidature.date_candidature }}</td>
+                <td>{{ candidature.statut }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="text-center">Aucune candidature</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

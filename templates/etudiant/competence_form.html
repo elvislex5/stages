@@ -1,0 +1,19 @@
+{% extends 'etudiant/base_etudiant.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Ajouter une compétence</h2>
+    <div class="card">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="d-flex justify-content-end">
+                    <a href="{% url 'competences_list' %}" class="btn btn-secondary me-2">Annuler</a>
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

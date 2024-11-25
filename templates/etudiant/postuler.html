@@ -1,0 +1,27 @@
+<!-- templates/etudiant/postuler.html -->
+{% extends "etudiant/base_etudiant.html" %}
+
+{% block content %}
+<div class="container card">
+    <h2 class="text-center">Postuler à l'offre : {{ offre.titre }}</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        
+        <!-- Sélectionner un CV existant -->
+        <div class="form-group">
+            <label for="cv">Sélectionner votre CV :</label>
+            <select name="cv" id="cv" class="form-control">
+                <option value="">--- Choisir un CV ---</option>
+                {% for cv in cv_list %}
+                    <option value="{{ cv.id }}">{{ cv }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="card-body d-flex justify-content-between mt-3">
+            <button type="submit" class="btn btn-success">Envoyer ma candidature</button>
+            <a href="{% url 'offre_detail' offre.pk %}" class="btn btn-secondary">Retour</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

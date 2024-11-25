@@ -1,0 +1,21 @@
+{% extends 'etudiant/base_etudiant.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Êtes-vous sûr de vouloir supprimer cette compétence ?</h2>
+    <div class="card">
+        <div class="card-body">
+            <p><strong>Compétence :</strong> {{ competence.nom }}</p>
+            <p><strong>Niveau :</strong> {{ competence.niveau }}</p>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-flex justify-content-end">
+                    <a href="{% url 'competences_list' %}" class="btn btn-secondary me-2">Annuler</a>
+                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
