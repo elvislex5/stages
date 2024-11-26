@@ -1,33 +1,23 @@
-import os
-
+from django.contrib import messages
 from django.contrib.auth import logout, login
-from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.http import JsonResponse, HttpResponseRedirect, HttpResponse, FileResponse, Http404
-from django.views import View
-
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
-
-from django.views.generic import FormView, TemplateView, ListView, CreateView, UpdateView, DeleteView, DetailView
-
+from django.contrib.auth.views import LoginView
 # Librairie pour la barre de recherche
 from django.contrib.postgres.search import SearchVector, SearchQuery, TrigramSimilarity, SearchRank
 from django.db.models import Q
-
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
+from django.views import View
+from django.views.generic import FormView, TemplateView, ListView, CreateView, UpdateView, DeleteView, DetailView
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 
-from django.contrib import messages
-
-from django.template.loader import render_to_string
-
-from stages import settings
-from .models import OffreStage, Candidature, Contrat, Etudiant, Entreprise, ServiceStage, UserProfile, Formation, \
-    ExperienceProfessionnelle, Competence, CV
 from .forms import CustomLoginForm, SignUpForm, OffreStageForm, SearchForm, EntrepriseForm, EtudiantForm, UserForm, \
     ExperienceProfessionnelleForm, CompetenceForm, UploadCVForm, LettreMotivationForm
+from .models import OffreStage, Candidature, Contrat, Etudiant, Entreprise, ServiceStage, UserProfile, Formation, \
+    ExperienceProfessionnelle, Competence, CV
 
 
 # Create your views here.
@@ -457,6 +447,126 @@ class CompetenceDeleteView(LoginRequiredMixin, DeleteView):
         # Limiter l'accès aux compétences de l'utilisateur connecté
         return Competence.objects.filter(user=self.request.user)
 
+class EspaceRecruteurView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    model = OffreStage
+    template_name = 'recruteur/accueil.html'
+    context_object_name = 'offres'
+
+    def get_queryset(self):
+        return OffreStage.objects.filter(entreprise=self.request.user.entreprise)
+
+    def test_func(self):
+        # Vérifie si l'utilisateur est un recruteur
+        return hasattr(self.request.user, 'entreprise')
+
+    def handle_no_permission(self):
+        # Redirige vers une page d'erreur ou d'accueil si non autorisé
+        return redirect('accueil')
+
+class OffresRecruteurListView(LoginRequiredMixin, ListView):
+    model = OffreStage
+    template_name = 'recruteur/mes_offres.html'
+    context_object_name = 'offres'
+
+    def get_queryset(self):
+        # Affiche uniquement les offres de l'entreprise du recruteur
+        queryset = OffreStage.objects.filter(entreprise=self.request.user.entreprise)
+        return queryset
+
+class OffreDetailRecruteurView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    model = OffreStage
+    template_name = 'recruteur/offre_detail_recruteur.html'
+    context_object_name = 'offre'
+
+    def test_func(self):
+        # Vérifie si l'utilisateur est un recruteur et l'auteur de l'offre
+        return self.request.user.profile.user_type == 'recruiter' and self.get_object().entreprise == self.request.user.entreprise
+
+class EntrepriseRecruteurDetailView(LoginRequiredMixin, DetailView):
+    model = Entreprise
+    template_name = 'recruteur/entreprise_recruteur_detail.html'
+
+    def get_object(self, queryset=None):
+        # Obtenez l'entreprise associée à l'utilisateur
+        entreprise = Entreprise.objects.filter(user=self.request.user).first()
+        if not entreprise:
+            # Si aucune entreprise n'est associée, redirigez vers la création d'entreprise
+            messages.warning(self.request, "Vous devez d'abord créer une entreprise.")
+            return redirect('creer_entreprise')  # Assurez-vous que cette vue est configurée
+        return entreprise
+
+class EntrepriseListView(ListView):
+    model = Entreprise
+    template_name = 'entreprise/entreprise_list.html'
+    context_object_name = 'entreprises'
+
+    def get_queryset(self):
+        return Entreprise.objects.all()
+
+class EntrepriseDetailView(DetailView):
+    model = Entreprise
+    template_name = 'entreprise/entreprise_detail.html'
+    context_object_name = 'entreprise'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        entreprise = self.get_object()
+        context['offres'] = OffreStage.objects.filter(entreprise=entreprise)
+        return context
+
+class CandidaturesReçuesListView(LoginRequiredMixin, ListView):
+    model = Candidature
+    template_name = 'recruteur/candidatures_recues.html'
+    context_object_name = 'candidatures'
+
+    def get_queryset(self):
+        return Candidature.objects.filter(offre__entreprise=self.request.user.entreprise)
+
+    def post(self, request, *args, **kwargs):
+        # Mettre à jour le statut d'une candidature
+        candidature_id = request.POST.get('candidature_id')
+        statut = request.POST.get('statut')
+        try:
+            candidature = Candidature.objects.get(id=candidature_id)
+            candidature.statut = statut
+            candidature.save()
+            return redirect('candidatures_recues')  # Redirection vers la liste des candidatures
+        except Candidature.DoesNotExist:
+            return redirect('candidatures_recues')
+
+class CandidatureDetailView(DetailView):
+    model = Candidature
+    template_name = 'recruteur/candidatures_detail.html'
+    context_object_name = 'candidature'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        etudiant = self.object.etudiant  # Étudiant lié à la candidature
+        context['etudiant'] = etudiant
+
+        # Cherche le CV lié à l'utilisateur (directement via etudiant.user)
+        try:
+            cv = CV.objects.filter(user=etudiant).latest('date_upload')  # Utilise `etudiant.user`
+            context['cv'] = cv
+        except CV.DoesNotExist:
+            context['cv'] = None  # Pas de CV trouvé
+
+        return context
+
+class ChangerStatutCandidatureView(UpdateView):
+    model = Candidature
+    fields = ['statut']  # Champ à modifier
+    template_name = 'recruteur/changer_statut_candidature.html'
+
+    def form_valid(self, form):
+        form.save()  # Enregistrer le nouveau statut
+        return redirect('candidatures_recues')  # Redirigez vers la liste des candidatures
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['candidature'] = self.object
+        return context
+
 
 # class ProfilEtudiantUpdateView(UpdateView):
 #     model = Etudiant
@@ -515,6 +625,22 @@ class CompetenceDeleteView(LoginRequiredMixin, DeleteView):
 #         context['cv'] = etudiant.cv
 #         return context
 
+class ListeOffresView(LoginRequiredMixin, ListView):
+    model = OffreStage
+    template_name = 'service/liste_offres.html'
+    context_object_name = 'offres'
+
+    def get_queryset(self):
+        return OffreStage.objects.all().order_by('-date_creation')
+
+class ModifierStatutOffreView(LoginRequiredMixin, UpdateView):
+    model = OffreStage
+    fields = ['statut']
+    template_name = 'service/modifier_statut_offre.html'
+
+    def get_success_url(self):
+        return reverse_lazy('liste_offres')
+
 
 # Vue pour les entretiens
 class EntretiensView(LoginRequiredMixin, TemplateView):
@@ -549,78 +675,25 @@ class HistoriqueCandidaturesView(LoginRequiredMixin, TemplateView):
         context['candidatures'] = self.request.user.etudiant.candidatures.all()  # Passer l'utilisateur connecté
         return context
 
-class EspaceRecruteurView(LoginRequiredMixin, UserPassesTestMixin, ListView):
-    model = OffreStage
-    template_name = 'recruteur/accueil.html'
-    context_object_name = 'offres'
 
-    def get_queryset(self):
-        return OffreStage.objects.filter(entreprise=self.request.user.entreprise)
 
-    def test_func(self):
-        # Vérifie si l'utilisateur est un recruteur
-        return hasattr(self.request.user, 'entreprise')
-
-    def handle_no_permission(self):
-        # Redirige vers une page d'erreur ou d'accueil si non autorisé
-        return redirect('accueil')
-
-class OffresRecruteurListView(LoginRequiredMixin, ListView):
-    model = OffreStage
-    template_name = 'recruteur/mes_offres.html'
-    context_object_name = 'offres'
-
-    def get_queryset(self):
-        # Affiche uniquement les offres de l'entreprise du recruteur
-        queryset = OffreStage.objects.filter(entreprise=self.request.user.entreprise)
-        return queryset
-
-class OffreDetailRecruteurView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
-    model = OffreStage
-    template_name = 'recruteur/offre_detail_recruteur.html'
-    context_object_name = 'offre'
-
-    def test_func(self):
-        # Vérifie si l'utilisateur est un recruteur et l'auteur de l'offre
-        return self.request.user.profile.user_type == 'recruiter' and self.get_object().entreprise == self.request.user.entreprise
-
-class EntrepriseRecruteurDetailView(LoginRequiredMixin, DetailView):
-    model = Entreprise
-    template_name = 'recruteur/entreprise_recruteur_detail.html'
-
-    def get_object(self, queryset=None):
-        # Obtenez l'entreprise associée à l'utilisateur
-        entreprise = Entreprise.objects.filter(user=self.request.user).first()
-        if not entreprise:
-            # Si aucune entreprise n'est associée, redirigez vers la création d'entreprise
-            messages.warning(self.request, "Vous devez d'abord créer une entreprise.")
-            return redirect('creer_entreprise')  # Assurez-vous que cette vue est configurée
-        return entreprise
-
-class CandidaturesReçuesListView(LoginRequiredMixin, ListView):
+# Vue de l'étudiant pour consulter ses candidatures
+class MesCandidaturesView(LoginRequiredMixin, ListView):
     model = Candidature
-    template_name = 'recruteur/candidatures_recues.html'
+    template_name = 'etudiant/mes_candidatures.html'
     context_object_name = 'candidatures'
 
     def get_queryset(self):
-        return Candidature.objects.filter(offre__entreprise=self.request.user.entreprise)
+        # Filtrer les candidatures de l'étudiant connecté
+        return Candidature.objects.filter(etudiant=self.request.user)
 
-    def post(self, request, *args, **kwargs):
-        # Mettre à jour le statut d'une candidature
-        candidature_id = request.POST.get('candidature_id')
-        statut = request.POST.get('statut')
-        try:
-            candidature = Candidature.objects.get(id=candidature_id)
-            candidature.statut = statut
-            candidature.save()
-            return redirect('candidatures_recues')  # Redirection vers la liste des candidatures
-        except Candidature.DoesNotExist:
-            return redirect('candidatures_recues')
-
-class CandidatureDetailView(DetailView):
-    model = Candidature
-    template_name = 'recruteur/candidatures_recues.html'
-    context_object_name = 'candidature'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Ajouter le compteur de candidatures
+        context['candidatures_count'] = self.get_queryset().count()
+        # Ajouter d'autres stats si nécessaire
+        # context['vues_cv'] = 0  # À mettre à jour selon la logique métier pour les vues de CV
+        return context
 
 
 class ContratsListView(LoginRequiredMixin, ListView):
@@ -645,7 +718,7 @@ class CreerEntrepriseView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('espace_recruteur')
+        return reverse_lazy('espace_recruteur')
 
 
 
@@ -819,57 +892,46 @@ class PostulerView(LoginRequiredMixin, CreateView):
     template_name = 'etudiant/postuler.html'
 
     def form_valid(self, form):
-        # Associer l'étudiant connecté et l'offre à la candidature
+        # Associer l'étudiant connecté et l'offre
         form.instance.etudiant = self.request.user
         offre = get_object_or_404(OffreStage, pk=self.kwargs['pk'])
         form.instance.offre = offre
 
+        # Vérification : Si une candidature existe déjà, empêcher la soumission
+        if Candidature.objects.filter(etudiant=self.request.user, offre=offre).exists():
+            messages.error(self.request, "Vous avez déjà postulé à cette offre.")
+            return redirect('espace_etudiant')
+
         # Récupérer l'ID du CV sélectionné
         cv_id = self.request.POST.get('cv')
-        # Debug pour vérifier si le CV a bien un fichier
-        if cv_id:
-            # Chercher le CV sélectionné dans la base de données et l'associer à la candidature
-            cv = get_object_or_404(CV, pk=cv_id)
-            form.instance.cv = cv
+        if not cv_id:
+            messages.error(self.request, "Veuillez sélectionner un CV avant de postuler.")
+            return self.form_invalid(form)
 
-            # Vérifier si un fichier est associé au champ fichier
-            if cv.fichier:
-                print(f"Nom du fichier associé : {cv.fichier.name}")
-            else:
-                print("Aucun fichier associé au champ 'fichier'.")
+        # Vérifier l'existence et la validité du CV
+        cv = get_object_or_404(CV, pk=cv_id, user=self.request.user)
+        if not cv.fichier:
+            messages.error(self.request, "Le CV sélectionné ne contient aucun fichier.")
+            return self.form_invalid(form)
 
+        # Associer le CV à la candidature
+        form.instance.cv = cv
+        messages.success(self.request, "Votre candidature a été enregistrée avec succès.")
         return super().form_valid(form)
 
 
     def get_success_url(self):
-        return reverse_lazy('offre_detail', kwargs={'pk': self.kwargs['pk']})
+        return reverse_lazy('espace_etudiant')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Récupère l'offre à partir de l'ID dans l'URL
-        context['offre'] = get_object_or_404(OffreStage, pk=self.kwargs['pk'])
-        # Récupérer tous les CV de l'étudiant connecté
+        offre = get_object_or_404(OffreStage, pk=self.kwargs['pk'])
+        context['offre'] = offre
         context['cv_list'] = CV.objects.filter(user=self.request.user)
+        context['can_postuler'] = context['cv_list'].exists()  # Vérifie s'il existe des CV
         return context
 
-class EntrepriseListView(ListView):
-    model = Entreprise
-    template_name = 'entreprise/entreprise_list.html'
-    context_object_name = 'entreprises'
 
-    def get_queryset(self):
-        return Entreprise.objects.all()
-
-class EntrepriseDetailView(DetailView):
-    model = Entreprise
-    template_name = 'entreprise/entreprise_detail.html'
-    context_object_name = 'entreprise'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        entreprise = self.get_object()
-        context['offres'] = OffreStage.objects.filter(entreprise=entreprise)
-        return context
 
 # @login_required
 # def postuler_offre(request, offre_id):

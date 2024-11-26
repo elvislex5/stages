@@ -45,7 +45,10 @@ urlpatterns = [
     path('mes-offres/', views.OffresRecruteurListView.as_view(), name='mes_offres'),
     path('entreprise/', views.EntrepriseRecruteurDetailView.as_view(), name='informations_entreprise'),
     path('candidatures/', views.CandidaturesReçuesListView.as_view(), name='candidatures_recues'),
-    path('candidatures/<int:pk>/', views.CandidatureDetailView.as_view(), name='candidatures_detail'),
+    path('candidatures/<int:pk>/details', views.CandidatureDetailView.as_view(), name='candidatures_detail'),
+    path('candidature/<int:pk>/changer-statut/', views.ChangerStatutCandidatureView.as_view(),
+         name='changer_statut_candidature'),
+    path('mes-candidatures/', views.MesCandidaturesView.as_view(), name='mes_candidatures'),
 
     path('contrats/', views.ContratsListView.as_view(), name='contrats'),
 

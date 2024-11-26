@@ -86,6 +86,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # Ajoutez ici votre context processor
+                'gestion.context_processors.candidatures_count',
             ],
         },
     },
@@ -106,7 +108,7 @@ WSGI_APPLICATION = 'stages.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
+        'NAME': 'postgresql',
         'USER': 'postgres',
         'PASSWORD': 'Bienvenue5',
         'HOST': 'localhost',

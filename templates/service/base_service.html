@@ -81,6 +81,7 @@
                                 {% else %}
                                     <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 70px; height: 70px; background-color: #f0f0f0; font-size: 24px;">
                                         {{ user.first_name|slice:":1"|upper }}{{ user.last_name|slice:":1"|upper }}
+                                        {{ user.entreprise.nom }}
                                     </div>
                                 {% endif %}
                                 <!-- Nom et prénom -->
@@ -90,23 +91,23 @@
                             </div>
                         </div>
         
-                        <!-- Div pour les stats -->
-                        <div class="card mb-3" style="background-color: white;">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-around text-center">
-                                    <div>
-                                        <i class="fas fa-briefcase" style="font-size: 24px;"></i>
-                                        <p class="mb-1">Offres publiées</p>
-                                        <strong>0</strong>
-                                    </div>
-                                    <div>
-                                        <i class="fas fa-eye" style="font-size: 24px;"></i>
-                                        <p class="mb-1">Candidatures reçues</p>
-                                        <strong>0</strong>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+{#                        <!-- Div pour les stats -->#}
+{#                        <div class="card mb-3" style="background-color: white;">#}
+{#                            <div class="card-body">#}
+{#                                <div class="d-flex justify-content-around text-center">#}
+{#                                    <div>#}
+{#                                        <i class="fas fa-briefcase" style="font-size: 24px;"></i>#}
+{#                                        <p class="mb-1">Offres publiées</p>#}
+{#                                        <strong>0</strong>#}
+{#                                    </div>#}
+{#                                    <div>#}
+{#                                        <i class="fas fa-eye" style="font-size: 24px;"></i>#}
+{#                                        <p class="mb-1">Candidatures reçues</p>#}
+{#                                        <strong>0</strong>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
         
                         <!-- Div pour les champs du profil -->
                         <div class="card mb-3" style="background-color: white;">
@@ -153,7 +154,17 @@
                     <!-- Main Content -->
                     <main class="col-md-9">
                         {% block content %}
-                        <!-- Content will be injected here -->
+                        <div class="container">
+                            <iframe 
+                                    title="rapport_SI" 
+                                    width=100%
+                                    height="541.25" 
+                                    src="https://app.powerbi.com/reportEmbed?reportId=7f1bdfbc-0dae-48ca-b6f5-6678751fdcf1&autoAuth=true&ctid=bc34c164-6415-466b-8e09-7f6feb22f4ee" 
+                                    frameborder="0" 
+                                    allowFullScreen="true">
+                                
+                            </iframe>
+                        </div>
                         {% endblock content %}
                     </main>
                 </div>

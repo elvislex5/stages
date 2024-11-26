@@ -45,11 +45,6 @@ class Entreprise(models.Model):
     secteur_activite = models.CharField(max_length=300, blank=True)
     email_contact = models.EmailField(blank=True)
 
-    def get_logo_url(self):
-        if self.logo and hasattr(self.logo, 'url'):
-            return self.logo.url
-        return '/media/logos/default_logo.png'
-
     def __str__(self):
         return self.nom
 
@@ -72,6 +67,7 @@ class Etudiant(models.Model):
     adresse = models.CharField(max_length=200, null=True, blank=True)
     # Nouveaux champs pour les documents
     lettre_motivation = models.FileField(upload_to='etudiants/lettres_motivation/', blank=True, null=True)
+
     def __str__(self):
         return self.user.username
 
@@ -81,7 +77,7 @@ class CV(models.Model):
     date_upload = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f"CV de {self.user.username}"
+        return f"{self.user.username} - {self.fichier.name}"
 
 
 # Informations académiques
@@ -169,20 +165,20 @@ class OffreStage(models.Model):
 class Candidature(models.Model):
     STATUT_CHOICES = [
         ('en_attente', 'En attente'),
-        ('selectionne', 'Sélectionné pour entretien'),
+        ('selectionne', 'Accepté'),
         ('rejete', 'Rejeté'),
     ]
     etudiant = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     offre = models.ForeignKey(OffreStage, on_delete=models.CASCADE, related_name="candidatures")
-    cv = models.FileField(upload_to='cv/', blank=True)
+    cv = models.ForeignKey(CV, on_delete=models.CASCADE, blank=True)
     lettre_motivation = models.FileField(upload_to='lettres_motivation/', blank=True)
     statut = models.CharField(max_length=20, choices=STATUT_CHOICES, default='en_attente')
     commentaires = models.TextField(null=True, blank=True)
     date_soumission = models.DateField(auto_now_add=True)
-    date_reponse = models.DateField(null=True, blank=True)
+    date_reponse = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.etudiant} - {self.stage.titre}'
+        return f'{self.etudiant.username} - {self.offre.titre}'
 
 
 

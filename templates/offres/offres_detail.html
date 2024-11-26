@@ -5,24 +5,28 @@
     <a href="{% url 'offre_list' %}" class="btn btn-secondary my-4">
         &larr; Retour
     </a>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="alert alert-{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
     <!-- En-tête de l'entreprise -->
     <div class="card shadow-sm p-4 mb-4">
         <div class="row align-items-center">
             <div class="col-md-2">
-                <img src="{{ offre.entreprise.get_logo_url }}" alt="Logo de {{ offre.entreprise.nom }}" class="img-fluid">
+                <img src="{{ offre.entreprise.logo.url }}" class="img-fluid">
             </div>
             <div class="col-md-10">
                 <h1 class="text-black">{{ offre.titre }}</h1>
                 <div class="d-flex gap-3 align-items-center">
                     <span class="badge bg-secondary">
-                        <i class="fas fa-briefcase"></i> Stage fonctionnel
+                        <i class="fas fa-briefcase"></i> {{ offre.type_stage }}
                     </span>
                     <span class="badge bg-secondary">
                         <i class="fas fa-map-marker-alt"></i> {{ offre.localisation }}
-                    </span>
-                    <span class="badge bg-secondary">
-                        <i class="fas fa-building"></i> Sur site
                     </span>
                 </div>
                 <div class="mt-3">
