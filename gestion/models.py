@@ -195,6 +195,7 @@ class Contrat(models.Model):
 
 
 
+
 # Signal pour créer le profil en fonction du type d'utilisateur
 # @receiver(post_save, sender=User)
 # def create_user_profile(sender, instance, created, **kwargs):

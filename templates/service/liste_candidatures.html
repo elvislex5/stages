@@ -1,0 +1,34 @@
+{% extends 'service/base_service.html' %}
+
+{% block content %}
+
+    
+    <div class="container">
+    <h1>Liste des candidatures reçues</h1>
+
+    <!-- Tableau des candidatures -->
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+            <th>Étudiant</th>
+            <th>Offre</th>
+            <th>Date de Soumission</th>
+            <th>Statut</th>
+            <th>Détails</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for candidature in candidatures %}
+          <tr>
+            <td>{{ candidature.etudiant.username }}</td>
+            <td>{{ candidature.offre.titre }}</td>
+            <td>{{ candidature.date_soumission }}</td>
+            <td>{{ candidature.statut }}</td>
+            <td><a href="{% url 'detail_candidature' candidature.pk %}">Voir</a></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+{% endblock %}

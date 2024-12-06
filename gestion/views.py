@@ -387,25 +387,25 @@ class CVDeleteView(View):
         cv.delete()
         return redirect('cv_upload')
 
-class LettreMotivationDetailView(TemplateView):
-    template_name = "etudiant/lettre_motivation_detail.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Récupérer l'étudiant connecté
-        etudiant = get_object_or_404(Etudiant, user=self.request.user)
-        context['lettre_motivation'] = etudiant.lettre_motivation  # Champ lettre_motivation du modèle Etudiant
-        return context
-
-class LettreMotivationUpdateView(UpdateView):
-    model = Etudiant
-    form_class = LettreMotivationForm
-    template_name = 'etudiant/upload_lettre_motivation.html'
-    success_url = reverse_lazy('lettre_motivation_detail')  # Vous pouvez rediriger vers une page de confirmation
-
-    def get_object(self, queryset=None):
-        # Retourne l'étudiant actuellement connecté
-        return self.request.user.etudiant  # Assurez-vous que le modèle Etudiant est lié à l'utilisateur
+# class LettreMotivationDetailView(TemplateView):
+#     template_name = "etudiant/lettre_motivation_detail.html"
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         # Récupérer l'étudiant connecté
+#         etudiant = get_object_or_404(Etudiant, user=self.request.user)
+#         context['lettre_motivation'] = etudiant.lettre_motivation  # Champ lettre_motivation du modèle Etudiant
+#         return context
+#
+# class LettreMotivationUpdateView(UpdateView):
+#     model = Etudiant
+#     form_class = LettreMotivationForm
+#     template_name = 'etudiant/upload_lettre_motivation.html'
+#     success_url = reverse_lazy('lettre_motivation_detail')  # Vous pouvez rediriger vers une page de confirmation
+#
+#     def get_object(self, queryset=None):
+#         # Retourne l'étudiant actuellement connecté
+#         return self.request.user.etudiant  # Assurez-vous que le modèle Etudiant est lié à l'utilisateur
 
 
 class CompetenceListView(LoginRequiredMixin, ListView):
@@ -625,21 +625,29 @@ class ChangerStatutCandidatureView(UpdateView):
 #         context['cv'] = etudiant.cv
 #         return context
 
-class ListeOffresView(LoginRequiredMixin, ListView):
-    model = OffreStage
-    template_name = 'service/liste_offres.html'
-    context_object_name = 'offres'
+class ListeCandidaturesView(LoginRequiredMixin, ListView):
+    model = Candidature
+    template_name = 'service/liste_candidatures.html'
+    context_object_name = 'candidatures'
 
     def get_queryset(self):
-        return OffreStage.objects.all().order_by('-date_creation')
+        return Candidature.objects.select_related('offre', 'etudiant').order_by('-date_soumission')
 
-class ModifierStatutOffreView(LoginRequiredMixin, UpdateView):
-    model = OffreStage
-    fields = ['statut']
-    template_name = 'service/modifier_statut_offre.html'
-
-    def get_success_url(self):
-        return reverse_lazy('liste_offres')
+# class ListeOffresView(LoginRequiredMixin, ListView):
+#     model = OffreStage
+#     template_name = 'service/liste_offres.html'
+#     context_object_name = 'offres'
+#
+#     def get_queryset(self):
+#         return OffreStage.objects.all().order_by('-date_creation')
+#
+# class ModifierStatutOffreView(LoginRequiredMixin, UpdateView):
+#     model = OffreStage
+#     fields = ['statut']
+#     template_name = 'service/modifier_statut_offre.html'
+#
+#     def get_success_url(self):
+#         return reverse_lazy('liste_offres')
 
 
 # Vue pour les entretiens

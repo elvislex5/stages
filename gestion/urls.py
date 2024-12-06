@@ -29,8 +29,8 @@ urlpatterns = [
     path('documents/cv/', views.CVDetailView.as_view(), name='cv_detail'),
     path('documents/cv/upload/', views.CVUploadView.as_view(), name='cv_upload'),
     path('documents/cv/delete/', views.CVDeleteView.as_view(), name='cv_delete'),
-    path('documents/lettre-motivation/', views.LettreMotivationDetailView.as_view(), name='lettre_motivation_detail'),
-    path('documents/lettre-motivation/upload-lettre-motivation/', views.LettreMotivationUpdateView.as_view(), name='upload_lettre_motivation'),
+    # path('documents/lettre-motivation/', views.LettreMotivationDetailView.as_view(), name='lettre_motivation_detail'),
+    # path('documents/lettre-motivation/upload-lettre-motivation/', views.LettreMotivationUpdateView.as_view(), name='upload_lettre_motivation'),
 
     path('documents/cv/mon-cv/', views.CVGenerateView.as_view(), name='generate_cv'),
     path('documents/cv/mon-cv/pdf/', views.CVGeneratePDFView.as_view(), name='generate_cv_pdf'),
